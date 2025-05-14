@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PasswordGen - Random Password Generator</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>PasswordGen</h1>
+            <p>Generate secure random passwords</p>
+        </header>
+        
+        <main>
+            <div class="generator">
+                <div class="options">
+                    <label>
+                        Password Length: <span id="length-value">12</span>
+                        <input type="range" id="length" min="4" max="64" value="12">
+                    </label>
+                    
+                    <div class="checkboxes">
+                        <label>
+                            <input type="checkbox" id="uppercase" checked>
+                            Uppercase Letters (A-Z)
+                        </label>
+                        <label>
+                            <input type="checkbox" id="lowercase" checked>
+                            Lowercase Letters (a-z)
+                        </label>
+                        <label>
+                            <input type="checkbox" id="numbers" checked>
+                            Numbers (0-9)
+                        </label>
+                        <label>
+                            <input type="checkbox" id="symbols">
+                            Symbols (!@#$%^&*)
+                        </label>
+                    </div>
+                </div>
+                
+                <button id="generate">Generate Password</button>
+                
+                <div class="result">
+                    <input type="text" id="password" readonly placeholder="Generated password will appear here">
+                    <button id="copy">Copy</button>
+                </div>
+            </div>
+        </main>
+    </div>
+    
+    <script src="script.js"></script>
+</body>
+</html>
