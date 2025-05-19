@@ -8,6 +8,8 @@ document.addEventListener('DOMContentLoaded', function() {
     const generateBtn = document.getElementById('generate');
     const passwordField = document.getElementById('password');
     const copyBtn = document.getElementById('copy');
+    const strengthFill = document.getElementById('strength-fill');
+    const strengthText = document.getElementById('strength-text');
     
     const characterSets = {
         uppercase: 'ABCDEFGHIJKLMNOPQRSTUVWXYZ',
@@ -59,6 +61,7 @@ document.addEventListener('DOMContentLoaded', function() {
         }
         
         passwordField.value = password;
+        updateStrengthMeter(password);
         
         // Add some visual feedback
         generateBtn.style.transform = 'scale(0.95)';
@@ -93,6 +96,62 @@ document.addEventListener('DOMContentLoaded', function() {
             console.error('Failed to copy password: ', err);
             alert('Failed to copy password. Please copy manually.');
         }
+    }
+    
+    function updateStrengthMeter(password) {
+        if (!password) {
+            strengthFill.style.width = '0%';
+            strengthFill.className = 'strength-fill';
+            strengthText.textContent = 'Generate a password to see strength';
+            strengthText.className = 'strength-text';
+            return;
+        }
+        
+        let score = 0;
+        let feedback = [];
+        
+        // Length scoring
+        if (password.length >= 8) score += 25;
+        if (password.length >= 12) score += 15;
+        if (password.length >= 16) score += 10;
+        
+        // Character variety scoring
+        if (/[a-z]/.test(password)) score += 12;
+        if (/[A-Z]/.test(password)) score += 12;
+        if (/[0-9]/.test(password)) score += 12;
+        if (/[^a-zA-Z0-9]/.test(password)) score += 14;
+        
+        // Bonus for very long passwords
+        if (password.length >= 20) score += 10;
+        
+        // Determine strength level
+        let strengthClass = '';
+        let strengthLabel = '';
+        let width = '0%';
+        
+        if (score < 30) {
+            strengthClass = 'strength-weak';
+            strengthLabel = 'Weak';
+            width = '25%';
+        } else if (score < 50) {
+            strengthClass = 'strength-fair';
+            strengthLabel = 'Fair';
+            width = '50%';
+        } else if (score < 75) {
+            strengthClass = 'strength-good';
+            strengthLabel = 'Good';
+            width = '75%';
+        } else {
+            strengthClass = 'strength-strong';
+            strengthLabel = 'Strong';
+            width = '100%';
+        }
+        
+        // Update UI
+        strengthFill.style.width = width;
+        strengthFill.className = `strength-fill ${strengthClass}`;
+        strengthText.textContent = strengthLabel;
+        strengthText.className = `strength-text ${strengthClass}`;
     }
     
     // Generate an initial password
