@@ -94,6 +94,38 @@ header p {
     cursor: pointer;
 }
 
+.generation-options {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.batch-size {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.batch-size label {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    color: #333;
+    font-weight: 500;
+    width: 100%;
+}
+
+#batch-size {
+    width: 150px;
+}
+
+#batch-value {
+    font-weight: 700;
+    color: #667eea;
+    min-width: 20px;
+    text-align: right;
+}
+
 #generate {
     background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
     color: white;
@@ -208,6 +240,81 @@ header p {
 .strength-strong {
     background: linear-gradient(90deg, #28a745, #2ecc71);
     color: #28a745;
+}
+
+.batch-results {
+    margin-top: 20px;
+    padding: 20px;
+    background: rgba(248, 249, 250, 0.8);
+    border-radius: 8px;
+    border: 1px solid #e9ecef;
+}
+
+.batch-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+    font-weight: 600;
+    color: #333;
+}
+
+#copy-all {
+    padding: 8px 16px;
+    background: #17a2b8;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    font-size: 0.9rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.3s ease;
+}
+
+#copy-all:hover {
+    background: #138496;
+}
+
+.batch-list {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.batch-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px;
+    background: white;
+    border: 1px solid #dee2e6;
+    border-radius: 6px;
+}
+
+.batch-password {
+    flex: 1;
+    font-family: 'Monaco', 'Menlo', monospace;
+    font-size: 0.9rem;
+    color: #495057;
+    padding: 5px;
+    background: #f8f9fa;
+    border-radius: 4px;
+    word-break: break-all;
+}
+
+.batch-copy {
+    padding: 6px 12px;
+    background: #28a745;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    font-size: 0.8rem;
+    cursor: pointer;
+    transition: background 0.3s ease;
+}
+
+.batch-copy:hover {
+    background: #218838;
 }
 
 @media (max-width: 600px) {

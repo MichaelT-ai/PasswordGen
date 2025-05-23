@@ -41,11 +41,27 @@
                     </div>
                 </div>
                 
-                <button id="generate">Generate Password</button>
+                <div class="generation-options">
+                    <div class="batch-size">
+                        <label>
+                            Batch Size: <span id="batch-value">1</span>
+                            <input type="range" id="batch-size" min="1" max="10" value="1">
+                        </label>
+                    </div>
+                    <button id="generate">Generate Password</button>
+                </div>
                 
                 <div class="result">
                     <input type="text" id="password" readonly placeholder="Generated password will appear here">
                     <button id="copy">Copy</button>
+                </div>
+                
+                <div class="batch-results" id="batch-results" style="display: none;">
+                    <div class="batch-header">
+                        <span>Generated Passwords:</span>
+                        <button id="copy-all">Copy All</button>
+                    </div>
+                    <div class="batch-list" id="batch-list"></div>
                 </div>
                 
                 <div class="strength-meter">

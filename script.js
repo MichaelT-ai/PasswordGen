@@ -10,6 +10,11 @@ document.addEventListener('DOMContentLoaded', function() {
     const copyBtn = document.getElementById('copy');
     const strengthFill = document.getElementById('strength-fill');
     const strengthText = document.getElementById('strength-text');
+    const batchSlider = document.getElementById('batch-size');
+    const batchValue = document.getElementById('batch-value');
+    const batchResults = document.getElementById('batch-results');
+    const batchList = document.getElementById('batch-list');
+    const copyAllBtn = document.getElementById('copy-all');
     
     const characterSets = {
         uppercase: 'ABCDEFGHIJKLMNOPQRSTUVWXYZ',
@@ -22,15 +27,21 @@ document.addEventListener('DOMContentLoaded', function() {
         lengthValue.textContent = this.value;
     });
     
+    batchSlider.addEventListener('input', function() {
+        batchValue.textContent = this.value;
+    });
+    
     generateBtn.addEventListener('click', generatePassword);
     
     copyBtn.addEventListener('click', copyToClipboard);
+    
+    copyAllBtn.addEventListener('click', copyAllPasswords);
     
     passwordField.addEventListener('click', function() {
         this.select();
     });
     
-    function generatePassword() {
+    function generateSinglePassword() {
         const length = parseInt(lengthSlider.value);
         
         let availableChars = '';
@@ -49,19 +60,51 @@ document.addEventListener('DOMContentLoaded', function() {
         }
         
         if (availableChars === '') {
-            alert('Please select at least one character type!');
-            return;
+            return null;
         }
         
         let password = '';
-        
         for (let i = 0; i < length; i++) {
             const randomIndex = Math.floor(Math.random() * availableChars.length);
             password += availableChars[randomIndex];
         }
         
-        passwordField.value = password;
-        updateStrengthMeter(password);
+        return password;
+    }
+    
+    function generatePassword() {
+        const batchSize = parseInt(batchSlider.value);
+        
+        if (batchSize === 1) {
+            // Single password generation
+            const password = generateSinglePassword();
+            if (!password) {
+                alert('Please select at least one character type!');
+                return;
+            }
+            
+            passwordField.value = password;
+            updateStrengthMeter(password);
+            batchResults.style.display = 'none';
+        } else {
+            // Batch generation
+            const passwords = [];
+            for (let i = 0; i < batchSize; i++) {
+                const password = generateSinglePassword();
+                if (!password) {
+                    alert('Please select at least one character type!');
+                    return;
+                }
+                passwords.push(password);
+            }
+            
+            // Display first password in main field
+            passwordField.value = passwords[0];
+            updateStrengthMeter(passwords[0]);
+            
+            // Show batch results
+            displayBatchResults(passwords);
+        }
         
         // Add some visual feedback
         generateBtn.style.transform = 'scale(0.95)';
@@ -153,6 +196,99 @@ document.addEventListener('DOMContentLoaded', function() {
         strengthText.textContent = strengthLabel;
         strengthText.className = `strength-text ${strengthClass}`;
     }
+    
+    function displayBatchResults(passwords) {
+        batchList.innerHTML = '';
+        
+        passwords.forEach((password, index) => {
+            const item = document.createElement('div');
+            item.className = 'batch-item';
+            
+            item.innerHTML = `
+                <span class="batch-password">${password}</span>
+                <button class="batch-copy" onclick="copyIndividualPassword('${password}')">Copy</button>
+            `;
+            
+            batchList.appendChild(item);
+        });
+        
+        batchResults.style.display = 'block';
+    }
+    
+    function copyAllPasswords() {
+        const passwordElements = document.querySelectorAll('.batch-password');
+        const passwords = Array.from(passwordElements).map(el => el.textContent);
+        
+        if (passwords.length === 0) {
+            alert('No passwords to copy!');
+            return;
+        }
+        
+        const allPasswords = passwords.join('\n');
+        
+        try {
+            navigator.clipboard.writeText(allPasswords).then(() => {
+                // Visual feedback
+                const originalText = copyAllBtn.textContent;
+                copyAllBtn.textContent = 'Copied All!';
+                copyAllBtn.style.background = '#138496';
+                
+                setTimeout(() => {
+                    copyAllBtn.textContent = originalText;
+                    copyAllBtn.style.background = '#17a2b8';
+                }, 1500);
+            });
+        } catch (err) {
+            // Fallback for older browsers
+            const textarea = document.createElement('textarea');
+            textarea.value = allPasswords;
+            document.body.appendChild(textarea);
+            textarea.select();
+            document.execCommand('copy');
+            document.body.removeChild(textarea);
+            
+            const originalText = copyAllBtn.textContent;
+            copyAllBtn.textContent = 'Copied All!';
+            copyAllBtn.style.background = '#138496';
+            
+            setTimeout(() => {
+                copyAllBtn.textContent = originalText;
+                copyAllBtn.style.background = '#17a2b8';
+            }, 1500);
+        }
+    }
+    
+    // Global function for individual password copying
+    window.copyIndividualPassword = function(password) {
+        try {
+            navigator.clipboard.writeText(password).then(() => {
+                // Find the button that was clicked and give feedback
+                event.target.textContent = 'Copied!';
+                event.target.style.background = '#218838';
+                
+                setTimeout(() => {
+                    event.target.textContent = 'Copy';
+                    event.target.style.background = '#28a745';
+                }, 1000);
+            });
+        } catch (err) {
+            // Fallback
+            const textarea = document.createElement('textarea');
+            textarea.value = password;
+            document.body.appendChild(textarea);
+            textarea.select();
+            document.execCommand('copy');
+            document.body.removeChild(textarea);
+            
+            event.target.textContent = 'Copied!';
+            event.target.style.background = '#218838';
+            
+            setTimeout(() => {
+                event.target.textContent = 'Copy';
+                event.target.style.background = '#28a745';
+            }, 1000);
+        }
+    };
     
     // Generate an initial password
     generatePassword();
