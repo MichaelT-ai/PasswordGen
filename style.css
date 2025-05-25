@@ -318,13 +318,22 @@ header p {
 }
 
 @media (max-width: 600px) {
+    body {
+        padding: 10px;
+    }
+    
     .container {
-        padding: 30px 20px;
-        margin: 10px;
+        padding: 25px 20px;
+        margin: 0;
+        max-width: 100%;
     }
     
     header h1 {
         font-size: 2rem;
+    }
+    
+    header p {
+        font-size: 1rem;
     }
     
     .options > label {
@@ -338,7 +347,75 @@ header p {
         margin-left: 0;
     }
     
+    .batch-size label {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 8px;
+    }
+    
+    #batch-size {
+        width: 100%;
+    }
+    
+    .generation-options {
+        gap: 20px;
+    }
+    
     .result {
         flex-direction: column;
+        gap: 15px;
+    }
+    
+    #password {
+        font-size: 0.9rem;
+        padding: 16px;
+    }
+    
+    #copy, #copy-all {
+        padding: 16px;
+        font-size: 1rem;
+    }
+    
+    .batch-results {
+        padding: 15px;
+    }
+    
+    .batch-header {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 10px;
+    }
+    
+    .batch-item {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 10px;
+        padding: 15px;
+    }
+    
+    .batch-password {
+        font-size: 0.85rem;
+        padding: 10px;
+        text-align: center;
+    }
+    
+    .batch-copy {
+        padding: 12px;
+        font-size: 0.9rem;
+        align-self: center;
+        width: 80px;
+    }
+    
+    .strength-meter {
+        padding: 12px;
+    }
+    
+    .checkboxes {
+        gap: 15px;
+    }
+    
+    .checkboxes label {
+        padding: 12px 8px;
+        font-size: 0.95rem;
     }
 }
